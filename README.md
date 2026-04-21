@@ -1,29 +1,65 @@
-# lojista-pro-2.0
-# Lojista Pro 2.0 📈
+package lojistapro;
 
-O **Lojista Pro 2.0** é um sistema de gestão financeira desenvolvido em Java, projetado para simplificar o controle de caixa de pequenos comércios. Esta versão evoluiu do console para uma interface gráfica (GUI) baseada na biblioteca Swing, oferecendo uma experiência mais intuitiva e profissional.
+import javax.swing.JOptionPane;
 
-## 🚀 Objetivo do Projeto
-Automatizar a rotina de lojistas através de um software leve que substitui controles manuais. O sistema permite o registro de entradas, saídas, fechamento de saldo em tempo real e estimativas fiscais.
+public class LojistaPro2 {
 
-## ✨ Funcionalidades Principais
-- **Registro de Vendas:** Lançamento de faturamento bruto com acumulador automático.
-- **Gestão de Despesas:** Cadastro de boletos e contas a pagar (aluguel, fornecedores, etc.).
-- **Fechamento de Caixa:** Relatório instantâneo com quantidade de vendas, faturamento total, total de despesas e saldo líquido.
-- **Fiscal Pro (Extra):** Cálculo automático de 6% de imposto (baseado no Simples Nacional) sobre o faturamento total.
+    public static void main(String[] args) {
+        
+        double faturamento = 0, despesas = 0;
+        int vendasContador = 0;
+        int opcao = -1;
 
-## 🛠️ Requisitos Técnicos Aplicados
-Para atender aos critérios acadêmicos de Lógica e Programação, o sistema utiliza:
-- **Laço de Repetição (`while`):** Mantém o sistema ativo para múltiplas operações.
-- **Estruturas Condicionais (`if / else`):** Gerenciam o fluxo de decisões do menu.
-- **Interface Gráfica (`JOptionPane`):** Janelas interativas para entrada e saída de dados.
-- **Parsing de Dados:** Conversão de strings para valores numéricos e suporte a diferentes formatos decimais (ponto e vírgula).
+        JOptionPane.showMessageDialog(null, "=== BEM-VINDO AO LOJISTA PRO 2.0 ===");
 
-## 🖥️ Como Executar
-1. Certifique-se de ter o **JDK 17** ou superior instalado.
-2. Baixe o arquivo `LojistaPro2.java`.
-3. Compile e execute o código através de uma IDE (como NetBeans ou IntelliJ) ou via terminal:
-   ```bash
-   javac LojistaPro2.java
-   java lojistapro.LojistaPro2
+        while (opcao != 0) {
+            
+            String menu = "--- MENU LOJISTA PRO ---\n\n"
+                        + "1. Lançar Venda\n"
+                        + "2. Registrar Boleto\n"
+                        + "3. Fechamento de Caixa\n"
+                        + "4. Imposto (6%)\n"
+                        + "0. Sair\n\n"
+                        + "Escolha uma opção:";
+            
+            String entrada = JOptionPane.showInputDialog(null, menu);
+            
+            if (entrada == null) break;
+
+            opcao = Integer.parseInt(entrada);
+
+            if (opcao == 1) {
+                String valorVenda = JOptionPane.showInputDialog("Valor da venda: R$");
+                if (valorVenda != null) {
+                    faturamento += Double.parseDouble(valorVenda.replace(",", "."));
+                    vendasContador++;
+                    JOptionPane.showMessageDialog(null, "✅ Venda registrada!");
+                }
+
+            } else if (opcao == 2) {
+                String valorDespesa = JOptionPane.showInputDialog("Valor da despesa: R$");
+                if (valorDespesa != null) {
+                    despesas += Double.parseDouble(valorDespesa.replace(",", "."));
+                    JOptionPane.showMessageDialog(null, "⚠️ Despesa anotada!");
+                }
+
+            } else if (opcao == 3) {
+                String relatorio = String.format(
+                    "--- RESUMO DE CAIXA ---\n\nVendas: %d\nFaturamento: R$ %.2f\nDespesas: R$ %.2f\n\nSALDO LÍQUIDO: R$ %.2f",
+                    vendasContador, faturamento, despesas, (faturamento - despesas)
+                );
+                JOptionPane.showMessageDialog(null, relatorio);
+
+            } else if (opcao == 4) {
+                double imposto = faturamento * 0.06;
+                JOptionPane.showMessageDialog(null, String.format("Imposto Estimado (6%%): R$ %.2f", imposto));
+
+            } else if (opcao == 0) {
+                JOptionPane.showMessageDialog(null, "Saindo do Lojista Pro 2.0...");
+            } else {
+                JOptionPane.showMessageDialog(null, "❌ Opção Inválida!");
+            }
+        }
+    }
+}
 
